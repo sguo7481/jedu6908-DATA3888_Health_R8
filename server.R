@@ -1,6 +1,6 @@
 server <- function(input, output) {
     
-    fectch_data <- reactive({
+    fetch_data <- reactive({
         countries <- input$countries
         subset <- covid_data %>% 
             dplyr::filter(location %in% countries,
@@ -9,9 +9,32 @@ server <- function(input, output) {
     return(subset)
     })
     
+    
+    fetch_map <- reactive({
+        world_map <- map_data("world")
+        world_map <- world_map %>%
+            mutate(region = replace(region, region == "UK", "United Kingdom")) %>%
+            mutate(region = replace(region, region == "USA", "United States"))
+        
+        specific_date = input$slider
+        covid_selected <- subset(covid_data, date == specific_date)
+        world_map_with_data <- merge(world_map, covid_selected, 
+                                     by.x = "region", by.y = "location",
+                                     all.x = TRUE)
+        world_map_with_data <- world_map_with_data[order(world_map_with_data$order), ]
+        
+        g <- ggplot(world_map_with_data,  
+                    aes(x = long, y = lat, group = group, 
+                        fill = get(input$map_variable), text=region)) +
+            geom_polygon() +
+            theme_void() +
+            theme(legend.position = "bottom")
+        return (g)
+    })
+    
     # NEW CASES INTERACTIVE PLOT
     output$new_cases_plot <- renderPlotly({
-            data <- fectch_data()
+            data <- fetch_data()
             if (input$smooth) {
                 g <- ggplot(data, 
                             aes(x = date, y = new_cases_smoothed, 
@@ -45,7 +68,7 @@ server <- function(input, output) {
         
     # TOTAL CASES INTERACTIVE PLOT
         output$total_cases_plot <- renderPlotly({
-            data <- fectch_data()
+            data <- fetch_data()
             g <- ggplot(data, 
                         aes(x = date, y = total_cases, 
                             group = location, color = location)) +
@@ -60,6 +83,13 @@ server <- function(input, output) {
                 xlab("")
             
             g <-plotly::ggplotly(g)
+            g
+        })
+    
+    # MAP
+        output$covid_map <- renderPlotly({
+            options(scipen=999) ## Force R not to use exponential notation. 
+            g <-plotly::ggplotly(fetch_map())
             g
         })
 }

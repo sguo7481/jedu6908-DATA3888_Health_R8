@@ -2,6 +2,7 @@ library(ggplot2)
 library(ggthemes)
 library(tidyverse)
 library(plotly)
+library(maps)
 
 # If you want to update the data, set it as TRUE. 
 # Or read csv directly from the link of the data

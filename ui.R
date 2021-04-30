@@ -46,7 +46,21 @@ ui <- dashboardPage( skin = "green",
                             title = "Total COVID19 Cases", solidHeader = TRUE,
                             plotlyOutput(outputId = "total_cases_plot")
                         ),
-                        
+                        box(width = 12,
+                            selectInput("map_variable", "Variable:", 
+                                        choices = colnames(covid_data)[c(5:59)],
+                                        selected = choices[1],
+                                        multiple = FALSE),
+                            sliderInput("slider", "Dates:",
+                                           min = min(covid_data$date),
+                                           max = max(covid_data$date),
+                                           value = max(covid_data$date), 
+                                           timeFormat = "%Y-%m-%d"),
+                            plotlyOutput(outputId = "covid_map")
+                        ),
+                        box(
+                            
+                        )
                     )
             ),
             
