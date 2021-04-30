@@ -33,7 +33,7 @@ server <- function(input, output) {
     })
     
     # NEW CASES INTERACTIVE PLOT
-    output$new_cases_plot <- renderPlotly({
+        output$new_cases_plot <- renderPlotly({
             data <- fetch_data()
             if (input$smooth) {
                 g <- ggplot(data, 
@@ -86,6 +86,116 @@ server <- function(input, output) {
             g
         })
     
+    # NEW DEATHS INTERACTIVE PLOT
+        output$new_deaths_plot <- renderPlotly({
+            data <- fetch_data()
+            if (input$smooth) {
+                g <- ggplot(data, 
+                            aes(x = date, y = new_deaths_smoothed, 
+                                group = location, color = location)) +
+                    geom_line(lwd = 1) +
+                    theme_bw() +
+                    ylab("Number of new cases") +
+                    scale_y_continuous(labels = scales::comma) +
+                    scale_x_date(date_breaks = "1 month") +
+                    scale_color_viridis_d() +
+                    theme(axis.text.x = element_text(angle = 90)) +
+                    labs(color = "Country/Region") +
+                    xlab("")
+            } else {
+                g <- ggplot(data, 
+                            aes(x = date, y = new_deaths, 
+                                group = location, color = location)) +
+                    geom_line(lwd = 1) +
+                    theme_bw() +
+                    ylab("Number of new cases") +
+                    scale_y_continuous(labels = scales::comma) +
+                    scale_x_date(date_breaks = "1 month") +
+                    scale_color_viridis_d() +
+                    theme(axis.text.x = element_text(angle = 90)) +
+                    labs(color = "Country/Region") +
+                    xlab("")
+            }
+            g <- plotly::ggplotly(g)
+            g
+        })
+        
+    # TOTAL DEATHS INTERACTIVE PLOT
+        output$total_deaths_plot <- renderPlotly({
+            data <- fetch_data()
+            g <- ggplot(data, 
+                        aes(x = date, y = total_deaths, 
+                            group = location, color = location)) +
+                geom_line(lwd = 1) +
+                theme_bw() +
+                ylab("Number of total cases") +
+                scale_y_continuous(labels = scales::comma) +
+                scale_x_date(date_breaks = "1 month") +
+                theme(axis.text.x = element_text(angle = 90)) +
+                scale_color_viridis_d() +
+                labs(color = "Country/Region") +
+                xlab("")
+            
+            g <-plotly::ggplotly(g)
+            g
+        })    
+        
+        
+      # NEW VACCINATIONS INTERACTIVE PLOT
+        output$new_vaccinations_plot <- renderPlotly({
+            data <- fetch_data()
+            if (input$smooth) {
+                g <- ggplot(data, 
+                            aes(x = date, y = new_vaccinations_smoothed, 
+                                group = location, color = location)) +
+                    geom_line(lwd = 1) +
+                    theme_bw() +
+                    ylab("Number of new cases") +
+                    scale_y_continuous(labels = scales::comma) +
+                    scale_x_date(date_breaks = "1 month") +
+                    scale_color_viridis_d() +
+                    theme(axis.text.x = element_text(angle = 90)) +
+                    labs(color = "Country/Region") +
+                    xlab("")
+            } else {
+                g <- ggplot(data, 
+                            aes(x = date, y = new_vaccinations, 
+                                group = location, color = location)) +
+                    geom_line(lwd = 1) +
+                    theme_bw() +
+                    ylab("Number of new cases") +
+                    scale_y_continuous(labels = scales::comma) +
+                    scale_x_date(date_breaks = "1 month") +
+                    scale_color_viridis_d() +
+                    theme(axis.text.x = element_text(angle = 90)) +
+                    labs(color = "Country/Region") +
+                    xlab("")
+            }
+            g <- plotly::ggplotly(g)
+            g
+        })
+        
+    # TOTAL VACCINATIONS INTERACTIVE PLOT
+        output$total_vaccinations_plot <- renderPlotly({
+            data <- fetch_data()
+            g <- ggplot(data, 
+                        aes(x = date, y = total_vaccinations, 
+                            group = location, color = location)) +
+                geom_line(lwd = 1) +
+                theme_bw() +
+                ylab("Number of total cases") +
+                scale_y_continuous(labels = scales::comma) +
+                scale_x_date(date_breaks = "1 month") +
+                theme(axis.text.x = element_text(angle = 90)) +
+                scale_color_viridis_d() +
+                labs(color = "Country/Region") +
+                xlab("")
+            
+            g <-plotly::ggplotly(g)
+            g
+        })    
+        
+        
     # MAP
         output$covid_map <- renderPlotly({
             options(scipen=999) ## Force R not to use exponential notation. 

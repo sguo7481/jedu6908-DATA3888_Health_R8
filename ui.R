@@ -19,11 +19,12 @@ ui <- dashboardPage( skin = "green",
     
     ## Body content
     dashboardBody(
+        
         tabItems(
             # Tab content
             tabItem(tabName = "dashboard",
                     fluidRow(
-                        # Input box: changes here applied to all plots on the dashboard home
+                        # Input box: changes here applied to plots on the dashboard home
                         box(width = 12,
                             selectInput("countries", "Countries/Regions:", 
                                         choices = unique(covid_data$location),
@@ -39,12 +40,28 @@ ui <- dashboardPage( skin = "green",
                                            separator = " - "),
                             ),
                         box(
-                            title = "New COVID19 Cases", solidHeader = TRUE,
+                            title = "New COVID19 Cases", status="warning",
                             plotlyOutput(outputId = "new_cases_plot")
                         ),
                         box(
-                            title = "Total COVID19 Cases", solidHeader = TRUE,
+                            title = "Total COVID19 Cases", status="warning",
                             plotlyOutput(outputId = "total_cases_plot")
+                        ),
+                        box(
+                          title = "New COVID-19 Deaths", status = "danger",
+                          plotlyOutput(outputId = "new_deaths_plot")
+                        ),
+                        box(
+                            title = "Total COVID-19 Deaths", status = "danger",
+                            plotlyOutput(outputId = "total_deaths_plot")
+                        ),
+                        box(
+                            title = "New COVID-19 Vaccinations", status = "success",
+                            plotlyOutput(outputId = "new_vaccinations_plot")
+                        ),
+                        box(
+                            title = "Total COVID-19 Vaccinations", status = "success",
+                            plotlyOutput(outputId = "total_vaccinations_plot")
                         ),
                         box(width = 12,
                             selectInput("map_variable", "Variable:", 
@@ -56,7 +73,8 @@ ui <- dashboardPage( skin = "green",
                                            max = max(covid_data$date),
                                            value = max(covid_data$date), 
                                            timeFormat = "%Y-%m-%d"),
-                            plotlyOutput(outputId = "covid_map")
+                            plotlyOutput(outputId = "covid_map", height = "80vh"),
+                            height = "80vh"
                         ),
                         box(
                             

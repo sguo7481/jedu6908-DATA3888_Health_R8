@@ -7,6 +7,7 @@ library(maps)
 # If you want to update the data, set it as TRUE. 
 # Or read csv directly from the link of the data
 update_data <- FALSE
+# update_data <- TRUE
 
 if (!dir.exists("data")) {
     dir.create("data")
