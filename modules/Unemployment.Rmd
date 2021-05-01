@@ -1,0 +1,78 @@
+---
+title: "Unemployment Rate in Australia"
+author: "Health_R8"
+date: "01/05/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(tuneR)
+library(tsfeatures)
+library(devtools)
+library(randomForest)
+library(stringdist)
+library(readxl)
+library(R.utils)
+library(reshape2)
+library(caTools)
+library(ggplot2)
+library(dplyr)
+library(ggthemes)
+library(uwot)
+library(tidyverse)
+library(msigdbr)
+library(pheatmap)
+library(grid)
+library(gridExtra)
+library(DT)
+library(viridis) 
+library(devtools)
+library(class)
+library(cvTools)
+library(plotly)
+library(readxl)
+library(janitor)
+library(mlbench)
+library(caret)
+library(DT)
+library(randomForest)
+library(e1071)
+library(ggplot2)
+library(dplyr)
+library(plotly)
+```
+
+```{r}
+unemployment <- read.csv("~/Desktop/USYD/Advanced Computing/Year4/Sem1/DATA3888/Assessments/Group Project/DATA3888_Health_R8/data/australia-unemployment-rate.csv", header = FALSE)
+```
+
+```{r}
+head(unemployment)
+```
+```{r}
+colnames(unemployment)[colnames(unemployment) == "V1"] <- "Date"
+colnames(unemployment)[colnames(unemployment) == "V2"] <- "Rate"
+head(unemployment)
+```
+
+```{r}
+class(unemployment$Date)
+unemployment$Date <- as.Date(unemployment$Date)
+class(unemployment$Date)
+head(unemployment)
+```
+
+```{r}
+unemployment_plot <- ggplot(data = unemployment, aes(x = Date, y = Rate)) +
+    geom_line(color="#69b3a2") +
+    ylab("Unemployment Rate (%)") + 
+    xlab ("Date") + 
+    ggtitle("Rise in Unemployment Rate in Australia during COVID-19 Pandemic")
+unemployment_plot
+```
+
+
